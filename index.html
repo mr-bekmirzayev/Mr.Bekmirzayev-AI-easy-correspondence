@@ -314,14 +314,8 @@
         function clearChat() {
             chatbox.innerHTML = "";
             localStorage.removeItem("chatHistory");
-
+            clearedMessage.style.opacity = "1";
         }
-
-        // if (localdata.length == 0 || !localdata){
-        //     clearedMessage.style.opacity = "1";
-        // }else{
-        //     clearedMessage.style.opacity = "0";
-        // }
 
         async function sendMessage() {
             const inputField = document.getElementById("userInput");
