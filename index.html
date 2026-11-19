@@ -1,381 +1,505 @@
 <!DOCTYPE html>
-<html lang="uz">
+<html lang="uz" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>𝙈𝙧 𝘽𝙚𝙠𝙢𝙞𝙧𝙯𝙖𝙮𝙚𝙫 ツ AI</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
-        integrity="sha512-ApSLB1Pd3/bZN8fWB/RG9YhN/7bd9Hkf3AGaE2mPfebjrxagjuBtx2GcgdqIlJkUzwylBo61r9Xa9NmgBI0swA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="icon" href="./meteor-solid (1).png">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 50px auto;
-            user-select: none;
-            padding: 20px;
-            background-color: #f4f7f6;
-        }
+    <title>Mr.Bekmirzayev AI - Easy Correspondence</title>
 
-        h2 {
-            color: #333;
-        }
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./meteor-solid (1).png">
 
-        #chatbox {
-            border: 1px solid #ccc;
-            height: 680px;
-            overflow-y: scroll;
-            transition: 0.35s;
-            padding: 15px;
-            opacity: 1;
-            margin-bottom: 15px;
-            background: none;
-            user-select: all;
-            backdrop-filter: blur(25px);
-            background: rgba(255, 255, 255, 0.457);
-            border-radius: 0px 8px 8px 8px;
-            box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.333);
-        }
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .chat-input-wrapper {
-            display: flex;
-            gap: 10px;
-        }
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-        input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            outline: none;
-            font-size: 14px;
-        }
+    <!-- Marked.js for Markdown & Code Parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-        button {
-            padding: 12px 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            background: linear-gradient(to left, rgba(255, 255, 255, 0.652), black);
-            box-shadow: inset 0 0 10px 0.2px white;
-            color: white;
-            transition: 0.50s;
-            font-weight: 800;
-            background-size: 200% 100%;
-        }
-
-        button:hover {
-            background-position: 225px;
-            color: white;
-            box-shadow: none;
-            background: linear-gradient(to left, white black);
-        }
-
-        #clearBtn {
-            background: #ff4d4d;
-            color: white;
-            box-shadow: none;
-            font-weight: 700;
-        }
-
-        #clearBtn:hover {
-            background-color: #cc0000;
-        }
-
-        /* #chatbox id'siga ega div ning scrollbar'i */
-        #chatbox::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        #chatbox::-webkit-scrollbar-track {
-            backdrop-filter: blur(25px);
-            border-radius: 10px;
-        }
-
-        #chatbox::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
-
-        #chatbox::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
-        }
-
-        .myNameLogo {
-            position: absolute;
-
-            color: black;
-            font-size: 16px;
-            font-weight: 900;
-
-        }
-
-        .userMessage {
-            padding: 5px 10px;
-            text-align: end;
-            position: relative;
-            z-index: 1;
-
-            border-radius: 10px 10px 10px 0px;
-        }
-
-        .userMessage>span {
-            padding: 5px 10px;
-            background-color: rgb(219, 236, 252);
-            border-radius: 10px 10px 0px 10px;
-
-        }
-
-
-        @keyframes textAnimation {
-            0% {
-                transform: translateY(20px);
-                text-shadow: 0 0 10px grey;
-            }
-
-            40% {
-                transform: translateY(-20px);
-                z-index: 10;
-                text-shadow: 0 0 10px lightgreen;
-                color: white;
-            }
-
-            60% {
-                z-index: 10;
-                text-shadow: 0 0 10px lightblue;
-                color: white;
-            }
-
-            80% {
-                z-index: 10;
-                transform: scale(1.6);
-                text-shadow: 0 0 10px orange;
-                color: white;
-            }
-
-            100% {
-                font-size: 30px;
-            }
-        }
-
-        /* @keyframes glowAnim {
-            0% {
-                transform: translateY(100px);
-                background-color: rgba(0, 0, 255, 0.705);
-                box-shadow: 0 0 150px 20px rgba(0, 0, 255, 0.705);
-            }
-
-            20% {
-                background-color: rgba(0, 145, 255, 0.705);
-                box-shadow: 0 0 150px 20px rgba(0, 145, 255, 0.705);
-            }
-
-            40% {
-                transform: translate(0px, 480px);
-                background-color: rgba(255, 149, 0, 0.705);
-                box-shadow: 0 0 150px 20px rgba(255, 149, 0, 0.705);
-            }
-
-            60% {
-                background-color: rgb(255, 0, 0);
-                box-shadow: 0 0 150px 20px rgba(255, 0, 0, 0.705);
-            }
-
-            70% {
-                transform: translate(300px, 480px);
-
-            }
-
-            80% {
-                transform: translate(306px, 105px);
-
-            }
-
-            100% {
-                transform: translate(0px, 120px);
-            }
-        } */
-
-        @keyframes logoAnim {
-            10% {
-                transform: 0px, 70px;
-            }
-
-            50% {
-                transform: translateX(-80px);
-            }
-
-            90% {
-                transform: translate(-65px, -60px);
-            }
-
-            100% {
-                transform: translate(-65px, -60px);
-            }
-        }
-
-        .aiMessage {
-            background-color: rgb(81, 167, 241);
-            text-align: start;
-            padding: 5px 10px;
-            color: white;
-            border-radius: 10px 10px 10px 0px;
-            width: fit-content;
-        }
-
-        .clearedMessage {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            pointer-events: none;
-            left: 50%;
-            top: 45%;
-            transform: translate(-50%, -50%);
-            /* Markazga mukammal keltirish uchun */
-            opacity: 0;
-            transition: opacity 0.35s ease;
-        }
-
-        .blueColor {
-            padding: 120px;
-            border-radius: 120px;
-            position: absolute;
-            filter: blur(185px);
-            animation: glowAnim 2 8s;
-            top: -20px;
-            transform: translateX(-102px);
-            background-color: rgba(0, 0, 255, 0.705);
-            box-shadow: 0 0 180px 25px rgba(0, 0, 255, 0.705);
-            left: 50px;
-            z-index: -1;
-        }
-
-        .noAnimEffect {
-            padding: 120px;
-            border-radius: 120px;
-            position: absolute;
-            filter: blur(155px);
-            bottom: 0;
-            transform: translate(0);
-            background-color: orange;
-            box-shadow: 0 0 150px 20px orange;
-            right: 0;
-        }
-    </style>
-
+    <!-- App Styles -->
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
+    <div class="app-container">
+        <!-- Sidebar Overlay (Mobile) -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <b
-        style="text-shadow: 0 0 10px grey; color: white; animation: textAnimation 1 4s; position: absolute ; top: 60px; left: 661px; font-size: 30px;">AI</b><br>
-    <span class="myNameLogo">𝙈𝙧 𝘽𝙚𝙠𝙢𝙞𝙧𝙯𝙖𝙮𝙚𝙫 ツ</span>
-    <div id="chatbox">
+        <!-- Sidebar -->
+        <aside class="sidebar closed" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="brand-badge" title="Mr.Bekmirzayev AI">
+                    <img src="./meteor-solid (1).png" alt="Mr.Bekmirzayev AI Logo" class="brand-logo-img">
+                    <div class="brand-text-container">
+                        <span class="brand-title">Mr.Bekmirzayev AI</span>
+                        <span class="brand-subtitle">Easy Correspondence</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="sidebar-action-box">
+                <button class="btn-new-chat" id="newChatBtn">
+                    <i class="fa-solid fa-plus"></i>
+                    <span data-i18n="newChat">Yangi suhbat</span>
+                </button>
+            </div>
+
+            <!-- Chat History List -->
+            <div class="chat-history-container" id="chatHistoryList">
+                <!-- Rendered dynamically via app.js -->
+            </div>
+
+            <!-- Sidebar Footer: Akkaunt, Til, Rejim va Sozlamalar -->
+            <div class="sidebar-footer">
+                <!-- Foydalanuvchi / Akkaunt tugmasi -->
+                <button type="button" class="sidebar-user-card" id="accountBtn" data-i18n-title="accountTitle" title="Akkaunt">
+                    <div class="sidebar-user-avatar">
+                        <i class="fa-regular fa-user" id="sidebarAccountIcon"></i>
+                    </div>
+                    <div class="sidebar-user-info">
+                        <span class="sidebar-user-name" id="sidebarAccountName" data-i18n="guest">Mehmon</span>
+                        <span class="sidebar-user-role" id="sidebarAccountSub">0/2 xabar</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-right sidebar-user-arrow"></i>
+                </button>
+
+                <!-- Tezkor boshqaruv paneli (Til, Mavzu, Sozlamalar) -->
+                <div class="sidebar-quick-toolbar">
+                    <div class="lang-select-wrap" data-i18n-title="language" title="Til">
+                        <i class="fa-solid fa-language"></i>
+                        <select id="languageSelect" class="lang-select js-lang-select" aria-label="Language">
+                            <option value="uz">O'zbekcha</option>
+                            <option value="en">English</option>
+                            <option value="ru">Русский</option>
+                        </select>
+                    </div>
+
+                    <button class="icon-btn" id="themeToggleBtn" data-i18n-title="themeToggle" title="Rejimni almashtirish">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <button class="icon-btn" id="settingsBtn" data-i18n-title="settingsTitle" title="Sozlamalar">
+                        <i class="fa-solid fa-gear"></i>
+                    </button>
+                </div>
+
+                <!-- API Kalit tezkor tugmasi (agar kalit kiritilmagan bo'lsa) -->
+                <button class="btn-inline-action" id="headerApiKeyBtn" data-i18n-title="apiKeyLabel" title="API Kalitni sozlash" style="display: none; width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-key"></i>
+                    <span data-i18n="apiAlertBtn">Kalitni ulash</span>
+                </button>
+
+                <button class="sidebar-footer-btn danger-action" id="clearAllChatsBtn" data-i18n-title="clearAll" title="Barcha chatlarni tozalash">
+                    <i class="fa-regular fa-trash-can"></i>
+                    <span data-i18n="clearAll">Barcha chatlarni tozalash</span>
+                </button>
+                <div class="author-credit-tag">
+                    <span data-i18n="author">Muallif:</span> <b>Mr.Bekmirzayev</b>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-wrapper">
+            <!-- App Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button class="icon-btn" id="sidebarToggleBtn" data-i18n-title="toggleSidebar" title="Yon panelni ochish / yopish">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="header-title-box">
+                        <span class="header-app-name">Mr.Bekmirzayev AI</span>
+                        <span class="guest-badge" id="guestBadge">Mehmon 0/2</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <!-- Barcha asosiy tugmalar sidebarga o'tkazildi -->
+                </div>
+            </header>
+
+            <!-- Chat Viewport -->
+            <main class="chat-viewport" id="chatViewport">
+                <div class="chat-content-container">
+
+                    <!-- Welcome Screen (Shown when active chat is empty) -->
+                    <div class="welcome-container" id="welcomeSection">
+                        <div class="welcome-avatar-wrap">
+                            <img src="./meteor-solid (1).png" alt="Mr.Bekmirzayev AI" class="welcome-avatar-img">
+                        </div>
+                        <h1 class="welcome-heading">
+                            <span data-i18n="welcomeTitle">Xush Kelibsiz!</span>
+                            <span class="highlight" data-i18n="welcomeHighlight">Qanday yordam bera olaman?</span>
+                        </h1>
+                        <p class="welcome-description" data-i18n="welcomeDesc">
+                            Sizning aqlli yordamchingiz. Savollarga javob berish, xat va insho tuzish, kod yozish va turli vazifalarda sizga ko'maklashishga tayyorman.
+                        </p>
+
+                        <!-- Quick API Key Banner (if not set) -->
+                        <div class="api-key-alert-box" id="apiKeyAlertBox" style="max-width: 720px; width: 100%;">
+                            <div class="api-key-alert-text">
+                                <i class="fa-solid fa-key"></i>
+                                <span data-i18n-html="apiAlert"><b>Yangi ochgan Google Gemini API kalitingiz bormi?</b> Uni bir marta kiriting, tizim modellarni avtomatik ulaydi!</span>
+                            </div>
+                            <button class="btn-inline-action" id="openSettingsKeyBtn">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span data-i18n="apiAlertBtn">Kalitni kiritish</span>
+                            </button>
+                        </div>
+
+                        <div class="welcome-prompts-grid" style="margin-top: 15px;">
+                            <div class="prompt-card" data-prompt-i18n="prompt1Text" data-prompt="Menga Python tilida Telegram bot yaratish bo'yicha qadamma-qadam qo'llanma va boshlang'ich kod ber.">
+                                <div class="prompt-card-icon"><i class="fa-solid fa-code"></i></div>
+                                <div>
+                                    <div class="prompt-card-title" data-i18n="prompt1Title">Telegram bot kodi</div>
+                                    <div class="prompt-card-desc" data-i18n="prompt1Desc">Python orqali boshlang'ich bot tuzish</div>
+                                </div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt-i18n="prompt2Text" data-prompt="Ishga qabul qilish yoki hamkorlik taklifi bo'yicha rasmiy, chiroyli va ta'sirli xat namunasi yozib ber.">
+                                <div class="prompt-card-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                                <div>
+                                    <div class="prompt-card-title" data-i18n="prompt2Title">Rasmiy xat loyihasi</div>
+                                    <div class="prompt-card-desc" data-i18n="prompt2Desc">Hamkorlik yoki ishga kirish xati</div>
+                                </div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt-i18n="prompt3Text" data-prompt="IT sohasida zamonaviy va talabgir yangi startap g'oyalarini taklif qil va ularning afzalliklarini tushuntir.">
+                                <div class="prompt-card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                                <div>
+                                    <div class="prompt-card-title" data-i18n="prompt3Title">Startap g'oyalari</div>
+                                    <div class="prompt-card-desc" data-i18n="prompt3Desc">IT va biznes yo'nalishida rejalar</div>
+                                </div>
+                            </div>
+
+                            <div class="prompt-card" data-prompt-i18n="prompt4Text" data-prompt="Ingliz tilini tez va samarali o'rganish bo'yicha 30 kunlik amaliy reja tuzib ber.">
+                                <div class="prompt-card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <div>
+                                    <div class="prompt-card-title" data-i18n="prompt4Title">Ingliz tili yoki darsingiz rejasi</div>
+                                    <div class="prompt-card-desc" data-i18n="prompt4Desc">30 kunlik intensiv o'rganish rejasi</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Container -->
+                    <div id="chatMessagesContainer" style="display: flex; flex-direction: column; gap: 20px;">
+                        <!-- Messages are dynamically rendered here -->
+                    </div>
+
+                </div>
+            </main>
+
+            <!-- Input Section -->
+            <footer class="chat-input-section">
+                <div class="chat-input-box">
+                    <textarea id="userInput" class="chat-textarea" rows="1"
+                              data-i18n-placeholder="inputPlaceholder"
+                              placeholder="Mr.Bekmirzayev AI ga xabar yozing..."></textarea>
+
+                    <button class="btn-send-message" id="sendMessageBtn" data-i18n-title="sendMessage" title="Xabarni yuborish" disabled>
+                        <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+                </div>
+                <div class="input-actions-row">
+                    <span class="input-hints-text" data-i18n="disclaimer">
+                        Mr.Bekmirzayev AI bu AI, xato qilishi mumkin.
+                    </span>
+                </div>
+            </footer>
+        </div>
     </div>
-    <div class="blueColor"></div>
-    <div class="noAnimEffect"></div>
-    <div class="clearedMessage">
-        <i class="fa-solid fa-meteor"
-            style="font-size: 85px; color: #ff4d4d; filter: drop-shadow(0 0 20px #ff4d4d);"></i>
-        <h2>Chat Tozalangan, <b style="color: black;">boshlang!</b></h2>
+
+    <!-- Onboarding / First Visit Modal -->
+    <div class="modal-overlay" id="onboardingModal">
+        <div class="modal-card onboarding-card">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--accent);"></i>
+                    <span data-i18n="onboardingTitle">Xush kelibsiz!</span>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p class="onboarding-subtitle" data-i18n="onboardingSubtitle">
+                    Mr.Bekmirzayev AI bilan ishlash juda oson. Boshlashdan oldin qisqacha qo'llanma:
+                </p>
+
+                <div class="onboarding-steps">
+                    <div class="onboarding-step">
+                        <div class="onboarding-step-icon"><i class="fa-regular fa-comment-dots"></i></div>
+                        <div>
+                            <div class="onboarding-step-title" data-i18n="onboardingStep1Title">1. Suhbat boshlang</div>
+                            <div class="onboarding-step-text" data-i18n="onboardingStep1Text">Pastdagi maydonga savolingizni yozing yoki tayyor takliflardan birini tanlang.</div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step">
+                        <div class="onboarding-step-icon"><i class="fa-solid fa-key"></i></div>
+                        <div>
+                            <div class="onboarding-step-title" data-i18n="onboardingStep2Title">2. API kalitni ulang</div>
+                            <div class="onboarding-step-text" data-i18n="onboardingStep2Text">Yuqoridagi sozlamalar tugmasi orqali Google Gemini API kalitingizni kiriting. Kalit bepul olinadi.</div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step">
+                        <div class="onboarding-step-icon"><i class="fa-regular fa-user"></i></div>
+                        <div>
+                            <div class="onboarding-step-title" data-i18n="onboardingStep3Title">3. Akkaunt yarating</div>
+                            <div class="onboarding-step-text" data-i18n="onboardingStep3Text">Mehmon sifatida 2 ta xabar yuborishingiz mumkin. Davom etish uchun ro'yxatdan o'ting yoki kiring.</div>
+                        </div>
+                    </div>
+
+                    <div class="onboarding-step">
+                        <div class="onboarding-step-icon"><i class="fa-solid fa-language"></i></div>
+                        <div>
+                            <div class="onboarding-step-title" data-i18n="onboardingStep4Title">4. Til va mavzuni tanlang</div>
+                            <div class="onboarding-step-text" data-i18n="onboardingStep4Text">Yuqoridagi menyudan o'zbek, ingliz yoki rus tilini va qulay mavzuni tanlang.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="onboardingDoneBtn" data-i18n="onboardingBtn">Tushundim</button>
+            </div>
+        </div>
     </div>
 
-    <div class="chat-input-wrapper">
-        <input type="text" id="userInput" placeholder="tortinmay yozavering! nimadan boshlaymiz?"
-            onkeydown="if(event.key === 'Enter') sendMessage()">
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-solid fa-sliders" style="color: var(--primary);"></i>
+                    <span data-i18n="settingsTitle">Ilova sozlamalari</span>
+                </h3>
+                <button class="icon-btn" id="closeSettingsBtn" style="border:none;" data-i18n-title="close" title="Yopish">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Account settings -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fa-regular fa-user"></i>
+                        <span data-i18n="accountTitle">Akkaunt</span>
+                    </div>
 
+                    <div class="account-box" id="accountGuestView">
+                        <p class="form-help" data-i18n="accountGuestText">Hozir mehmon sifatida foydalanmoqdasiz. 2 ta xabardan so'ng akkauntga kirish talab qilinadi.</p>
+                        <button type="button" class="btn-secondary settings-row-btn" id="settingsLoginBtn">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <span data-i18n="loginOrRegister">Kirish / Ro'yxatdan o'tish</span>
+                        </button>
+                    </div>
 
-        <button onclick="sendMessage()"><i class="fa-regular fa-paper-plane"></i> Yuborish</button>
-        <button id="clearBtn" onclick="clearChat()"><i class="fa-solid fa-trash-can"></i> Chatni tozalash</button>
+                    <div class="account-box" id="accountUserView" style="display: none;">
+                        <div class="account-user-row">
+                            <div class="account-avatar"><i class="fa-solid fa-user-check"></i></div>
+                            <div class="account-user-meta">
+                                <div class="account-email" id="accountEmail">—</div>
+                                <div class="form-help" id="accountStatus" data-i18n="signedInAs">Tizimga kirgansiz</div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-secondary settings-row-btn danger-outline" id="settingsLogoutBtn">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span data-i18n="logout">Chiqish</span>
+                        </button>
+                    </div>
+
+                    <!-- Xabar limiti holati -->
+                    <div class="settings-limit-box" id="settingsLimitBox" style="margin-top: 12px;">
+                        <div class="settings-limit-header">
+                            <span class="settings-limit-label" id="settingsLimitLabel" data-i18n="guestLimitLabel">Mehmon limiti:</span>
+                            <span class="settings-limit-badge" id="settingsLimitBadge">2 / 2 qoldi</span>
+                        </div>
+                        <div class="settings-limit-bar-bg">
+                            <div class="settings-limit-bar-fill" id="settingsLimitBar" style="width: 100%;"></div>
+                        </div>
+                        <p class="form-help" id="settingsLimitHelp" style="margin: 0;" data-i18n="limitGuestHelp">Mehmon sifatida yana 2 ta bepul xabar yuborishingiz mumkin.</p>
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-language"></i>
+                        <span data-i18n="language">Til</span>
+                    </div>
+                    <select id="settingsLanguageSelect" class="form-select js-lang-select" aria-label="Language">
+                        <option value="uz">O'zbekcha</option>
+                        <option value="en">English</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                </div>
+
+                <!-- Appearance -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fa-solid fa-palette"></i>
+                        <span data-i18n="appearance">Ko'rinish</span>
+                    </div>
+                    <button type="button" class="btn-secondary settings-row-btn" id="settingsThemeBtn">
+                        <i class="fa-solid fa-circle-half-stroke"></i>
+                        <span id="settingsThemeLabel" data-i18n="darkMode">Qorong'u rejim</span>
+                    </button>
+                </div>
+
+                <!-- API key -->
+                <div class="form-group">
+                    <label class="form-label" for="apiKeyInput" data-i18n="apiKeyLabel">Gemini API Kaliti (Google AI Studio)</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="password" id="apiKeyInput" class="form-input" data-i18n-placeholder="apiKeyPlaceholder" placeholder="AIzaSy... yoki kalitingizni kiriting">
+                        <button type="button" class="icon-btn" id="toggleApiKeyVisibility" data-i18n-title="showHideKey" title="Ko'rsatish/Yashirish">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-top: 6px;">
+                        <button type="button" class="btn-secondary" id="testKeyBtn" style="font-size: 12px; padding: 6px 12px;">
+                            <i class="fa-solid fa-bolt"></i> <span data-i18n="testKey">Kalitni tekshirish va modellarni aniqlash</span>
+                        </button>
+                    </div>
+                    <div id="modelDetectStatus" class="model-detect-status"></div>
+                    <span class="form-help" style="margin-top: 4px;">
+                        <span data-i18n="apiKeyHelp">Agar kalitingiz bo'lmasa yoki yangilamoqchi bo'lsangiz:</span>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" data-i18n="apiKeyHelpLink">Google AI Studio</a>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modelSelect" data-i18n="modelLabel">Sun'iy intellekt modeli</label>
+                    <select id="modelSelect" class="form-select">
+                        <option value="gemini-3.6-flash" selected>Gemini 3.6 Flash</option>
+                        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                        <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash Latest</option>
+                    </select>
+                    <span class="form-help" data-i18n="modelHelp">Tizim suhbat vaqtida eng optimal ishlovchi modelni avtomatik ravishda tanlaydi.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="saveSettingsBtn" data-i18n="saveApply">Saqlash va qo'llash</button>
+            </div>
+        </div>
     </div>
 
-    <script>
-        const chatbox = document.getElementById("chatbox");
-        const clearedMessage = document.querySelector('.clearedMessage')
-        const localdata = localStorage.getItem('chatHistory')
-        const API_KEY = "AQ.Ab8RN6Kr979sqD6lP7GKZ2vM73omTAstfSOM4NFVFZ-5yLK3Dg";
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-card auth-card">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-solid fa-user-shield" style="color: var(--primary);"></i>
+                    <span id="authModalTitle" data-i18n="authTitle">Akkauntga kirish</span>
+                </h3>
+                <button class="icon-btn" id="closeAuthBtn" style="border:none;" data-i18n-title="close" title="Yopish">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-notice" id="authRequiredNotice" style="display: none;">
+                    <i class="fa-solid fa-lock"></i>
+                    <span data-i18n="authRequiredText">Mehmon sifatida 2 ta xabar yubordingiz. Davom ettirish uchun iltimos akkauntga kiring yoki ro'yxatdan o'ting.</span>
+                </div>
 
-        window.onload = function () {
-            const savedChat = localStorage.getItem("chatHistory");
-            if (savedChat) {
-                chatbox.innerHTML = savedChat;
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }
-        };
+                <div class="auth-tabs">
+                    <button type="button" class="auth-tab active" id="loginTabBtn" data-i18n="loginTab">Kirish</button>
+                    <button type="button" class="auth-tab" id="registerTabBtn" data-i18n="registerTab">Ro'yxatdan o'tish</button>
+                </div>
 
-        function saveChat() {
-            const seted = localStorage.setItem("chatHistory", chatbox.innerHTML);
-            clearedMessage.style.opacity = "0";
-        }
+                <form id="authForm" novalidate>
+                    <div class="form-group" id="nameFieldGroup" style="display: none;">
+                        <label class="form-label" for="authNameInput" data-i18n="nameLabel">Ismingiz</label>
+                        <input type="text" id="authNameInput" class="form-input" data-i18n-placeholder="namePlaceholder" placeholder="Ism va familiya" autocomplete="name">
+                    </div>
 
-        function clearChat() {
-            chatbox.innerHTML = "";
-            localStorage.removeItem("chatHistory");
-            clearedMessage.style.opacity = "1";
-        }
+                    <div class="form-group">
+                        <label class="form-label" for="authEmailInput" data-i18n="emailLabel">Email</label>
+                        <input type="email" id="authEmailInput" class="form-input" data-i18n-placeholder="emailPlaceholder" placeholder="example@gmail.com" autocomplete="email">
+                    </div>
 
-        async function sendMessage() {
-            const inputField = document.getElementById("userInput");
-            const userText = inputField.value.trim();
-            chatbox.style.opacity = "1"
+                    <div class="form-group">
+                        <label class="form-label" for="authPasswordInput" data-i18n="passwordLabel">Parol</label>
+                        <input type="password" id="authPasswordInput" class="form-input" data-i18n-placeholder="passwordPlaceholder" placeholder="Kamida 6 ta belgi" autocomplete="current-password">
+                    </div>
 
-            if (!userText) return;
+                    <div class="auth-error" id="authError"></div>
 
-            chatbox.innerHTML += `<p class="userMessage"><span> ${userText}</span></p>`;
-            inputField.value = "";
-            chatbox.scrollTop = chatbox.scrollHeight;
-            saveChat();
+                    <button type="submit" class="btn-primary auth-submit" id="authSubmitBtn">
+                        <span data-i18n="loginBtn">Kirish</span>
+                    </button>
+                </form>
 
-            try {
-                // Hozirgi eng so'nggi ishlaydigan rasmiy modelga almashtirildi
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${API_KEY}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        system_instruction: {
-                            parts: [{ text: "Seni Mr.Bekmirzayev haqiqiy ismi Boburjon yaratgan. voy 😅, unaqa yomon muomilada bolish senga yarashmas ekan. Ular yomon muomila qilishsa sabrli bo'l xopmi? agar matningni bold da yozmoqchi bo'lsang ** qilib yozma, negaki ** bolib korinib qolayapti bold bolmay. b tagidan foydalanib ko'r? sog' omon bo'l, meni uyaltirma! nima bo'lsa ham o'ylab gapir. Assalomu alaykum deb javob ber, agar u shunday desa Va alaykum assalom deyishni unutma. diniy mavzularga aralashma agar Islom dinini foydalanuvchilar yomonlaydigan yoki xaqorotlaydigan bo'lsa ularga sabr bilan unday qilmasligini aytib o't. Nima bo'lsa ham biz musilmonmiz, o'zing ham agar isnon bo'lganingda Musilmon dinini tanlar ekansan sen tog'ri dindasan!!! Alloh mehribon... va keyin foydalanuvchilaring seni kim yaratganini so'rashmasa bu haqida gapirma, qachonki sorasa ayt. agar ular sendan kod so'rashsa uni bitta divga o'rab code tagidan foydalanib chiroyli va rangli qilkb ko'rintir. natija ekranga chiqib qolmasin" }]
-                        },
-                        contents: [{
-                            parts: [{ text: userText }]
-                        }]
-                    })
-                });
+                <button type="button" class="link-btn" id="forgotPasswordBtn" data-i18n="forgotPassword">Parolni tiklash</button>
+            </div>
+        </div>
+    </div>
 
-                const data = await response.json();
+    <!-- Dislike / Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal">
+        <div class="modal-card" style="max-width: 460px;">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fa-regular fa-thumbs-down" style="color: var(--danger);"></i>
+                    <span data-i18n="feedbackTitle">Javobni baholash</span>
+                </h3>
+                <button class="icon-btn" id="closeFeedbackBtn" style="border:none;" data-i18n-title="close" title="Yopish">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="feedback-question" data-i18n="feedbackQuestion">Nima uchun javob yoqmadi? Qisqacha yozing.</p>
+                <textarea id="feedbackReasonInput" class="form-input feedback-textarea" rows="4"
+                          data-i18n-placeholder="feedbackPlaceholder"
+                          placeholder="Masalan: savolga to'liq javob bermadi..."></textarea>
+                <button type="button" class="btn-secondary feedback-other-btn" id="feedbackOtherBtn">
+                    <i class="fa-solid fa-ellipsis"></i>
+                    <span data-i18n="feedbackOther">Boshqa</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelFeedbackBtn" data-i18n="cancel">Bekor qilish</button>
+                <button class="btn-danger" id="submitFeedbackBtn" data-i18n="feedbackSubmit">Yuborish</button>
+            </div>
+        </div>
+    </div>
 
-                if (data.error) {
-                    if (data.error.code === 429 || (data.error.message && data.error.message.includes("quota"))) {
-                        chatbox.innerHTML += `<p style="color: grey;"><b>Ogohlantirish:</b> Limit tugadi, iltimos oz vaqtdan so'ng qayta urinib ko'ring? bu bir kun vaqt olishi ham oz vaqt olishi ham mumkin..! uzur soraymiz...</p>`;
-                    } else {
-                        chatbox.innerHTML += `<p style="color: red;"><b>Xato:</b> ${data.error.message}</p>`;
-                    }
-                    saveChat();
-                    return;
-                }
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-card" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color: var(--danger);">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span data-i18n="deleteTitle">Suhbatni o'chirish</span>
+                </h3>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 14px; color: var(--text-secondary);" data-i18n="deleteText">
+                    Haqiqatan ham ushbu suhbatni o'chirib tashlamoqchimisiz? Ushbu amalni bekor qilib bo'lmaydi.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancelDeleteBtn" data-i18n="cancel">Bekor qilish</button>
+                <button class="btn-danger" id="confirmDeleteBtn" data-i18n="deleteConfirm">O'chirish</button>
+            </div>
+        </div>
+    </div>
 
-                if (data.candidates && data.candidates.length > 0) {
-                    const aiReply = data.candidates[0].content.parts[0].text;
-                    chatbox.innerHTML += `<p class="aiMessage"><b>AI:</b> ${aiReply}</p>`;
-                } else {
-                    chatbox.innerHTML += `<p style="color: red;">Javob kelmadi, ma'lumot tuzilishi boshqacha.</p>`;
-                }
-                chatbox.scrollTop = chatbox.scrollHeight;
-                saveChat();
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
 
-            } catch (error) {
-                console.error("Tarmoq xatoligi:", error);
-                chatbox.innerHTML += `<p style="color: red;">Tarmoqqa ulanishda xatolik yuz berdi!</p>`;
-                saveChat();
-            }
-        }
-    </script>
+    <!-- Firebase (Auth + Firestore) -->
+    <script type="module" src="./firebase.js"></script>
 
+    <!-- Translations -->
+    <script src="./i18n.js"></script>
+
+    <!-- Main Logic Script -->
+    <script src="./app.js"></script>
 </body>
 
 </html>

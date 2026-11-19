@@ -1,0 +1,22 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Har bir like / dislike shu yerga yoziladi.
+    // Mehmonlar ham o'z bahosini yubora olishi uchun create ochiq,
+    // lekin o'qish faqat tizimga kirgan foydalanuvchilarga ruxsat etilgan.
+    match /message_feedback/{feedbackId} {
+      allow create: if request.resource.data.rating in ['like', 'dislike']
+                    && request.resource.data.messageText is string
+                    && request.resource.data.messageText.size() <= 4000;
+      allow read: if request.auth != null;
+      allow update, delete: if false;
+    }
+
+    // Foydalanuvchi faqat o'z profilini o'qiy va yozа oladi.
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
